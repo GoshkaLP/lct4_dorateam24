@@ -1,0 +1,126 @@
+version: "2.2"
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    restart: unless-stopped
+    ports:
+      - "9094:9094"
+    volumes:
+      - "./kafka_data:/kafka"
+    environment:
+#      не забыть поставить на серваке перемнную PROJ_HOST, либо пробросить сюда другую переменную с IP
+      - KAFKA_LISTENERS=INTERNAL://0.0.0.0:9092,OUTSIDE://0.0.0.0:9094
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,OUTSIDE://$PROJ_HOST:9094
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_MESSAGE_MAX_BYTES=2000000
+      - KAFKA_CREATE_TOPICS="trains_agg:1:1,trains_noagg:1:1"
+    depends_on:
+      - zookeeper
+
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    volumes:
+      - "./psql_data:/var/lib/postgresql/data"
+    env_file:
+      - .env
+    ports:
+      - "5435:5432"
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    volumes:
+      - ./redis_data:/data
+      - ./container.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    depends_on:
+      - postgres
+
+  jobmanager:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    volumes:
+      - "./producer/pipe.py:/opt/flink/pipe.py"
+      - "./producer/.env:/opt/flink/.env"
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+
+
+  taskmanager:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    command: taskmanager
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+    depends_on:
+      - jobmanager
+
+  nginx:
+    image: nginx:1.19.0-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx_logs:/var/log/nginx
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./frontend/build:/var/www/app
+
+  producer:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile.producer
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+
+  copycat:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile.copycat
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+      - producer
+
+
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - copycat
