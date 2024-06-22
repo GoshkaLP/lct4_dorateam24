@@ -122,8 +122,6 @@ const StyledPopper = styled(Popper)({
  function AddressesField({ options, onChange, value, addresses, loading }) {
     const [filterKeyword, setFilterKeyword] = useState("");
 
-    console.log("adddress", options );
-
     const debouncedSetter = useMemo(
         () => debounce((keyword) => setFilterKeyword(keyword), 500),
         []
@@ -142,7 +140,7 @@ const StyledPopper = styled(Popper)({
             ListboxComponent={ListboxComponent}
             getOptionLabel={getOptionLabel(addresses)}
             options={options}
-            groupBy={(option) => option[0].toUpperCase()}
+            // groupBy={(option) => option[0].toUpperCase()}
             renderInput={(params) => <TextField {...params} label="Поиск по адресу..." />}
             renderOption={(props, option, state) =>
                 [props, option, state.index]

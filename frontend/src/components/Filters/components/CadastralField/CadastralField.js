@@ -140,11 +140,13 @@ function CadastralsField({ options, onChange, value, cadastrals, loading }) {
             ListboxComponent={ListboxComponent}
             getOptionLabel={getOptionLabel(cadastrals)}
             options={options}
-            groupBy={(option) => option[0].toUpperCase()}
             renderInput={(params) => <TextField {...params} label="Кадастр 1" />}
-            renderOption={(props, option, state) =>
-                [props, option, state.index]
-            }
+            renderOption={(props, option, state) => {
+                if (state.index ===1) {
+                    console.log([props, option, state.index]);
+                }
+                return [props, option, state.index];
+            }}
             onInputChange={(_, newInputValue) => debouncedSetter(newInputValue)}
             renderGroup={(params) => params}
         />
