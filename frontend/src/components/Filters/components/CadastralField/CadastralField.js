@@ -142,9 +142,6 @@ function CadastralsField({ options, onChange, value, cadastrals, loading }) {
             options={options}
             renderInput={(params) => <TextField {...params} label="Кадастр 1" />}
             renderOption={(props, option, state) => {
-                if (state.index ===1) {
-                    console.log([props, option, state.index]);
-                }
                 return [props, option, state.index];
             }}
             onInputChange={(_, newInputValue) => debouncedSetter(newInputValue)}
