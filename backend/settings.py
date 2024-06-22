@@ -19,7 +19,7 @@ class DBSettings(BaseSettings):
 
     @property
     def postgres_dsn(self):
-        return f"postgresql+asyncpg://{self.user}:{self.password}@{self.hostname}:{self.port}/{self.db}"
+        return f"postgresql://{self.user}:{self.password}@{self.hostname}:{self.port}/{self.db}"
 
 
 app_settings = AppSettings()
