@@ -88,13 +88,11 @@ services:
 
 
   app:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    build: .
     restart: unless-stopped
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       - postgres
