@@ -44,8 +44,6 @@ function Main({data, polygons, hexbin}) {
               markup={<TrainCarriages train={train} />}
             />
         </div>
-        <MessagePopup top="110px" left="20px" title="Для начала работы" text="попробуйте нажать на поезд или настроить фильтры" />
-        <MessagePopup bottom="76px" left="50%" title="Слои карты" text="оцените загруженность путей по гексагонам и регионам" isTranslate="true" />
     </main>
   );
 }

@@ -1,0 +1,20 @@
+.filters {
+    position: absolute;
+    z-index: 1000;
+    top: 50px;
+    left: 50px;
+    height: 600px;
+    width: 500px;
+}
+
+.filters-card {
+    height: 100%;
+    width: 100%
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 12px;
+}
