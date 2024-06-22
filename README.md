@@ -8,7 +8,10 @@
 [Ссылка](https://www.figma.com/design/tcq0tgLDgDZQucCx6NIdj4/%D0%BB%D1%86%D1%8224?node-id=0-1&t=81d1cDCnlHG6WQxI-1)
 
 ### Презентация
-WIP
+[Ссылка](https://disk.yandex.ru/d/w7Zw85z_A-3Ohw)
+
+### Сопроводительная документация
+[Ссылка](https://disk.yandex.ru/d/lrMIWFLAmFa85Q)
 
 ### Поставленная проблема
 - Подбор и анализ земельных участков в Москве ведется вручную, что требует много времени и усилий.
