@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SERVER = os.getenv('POSTGRES_HOST')
+SERVER = os.getenv("POSTGRES_HOST")
 
 
 async def get_redis():

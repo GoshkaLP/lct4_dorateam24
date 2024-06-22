@@ -26,7 +26,7 @@ services:
       - zookeeper
 
   postgres:
-    image: postgres
+    image: postgis/postgis
     restart: unless-stopped
     volumes:
       - "./psql_data:/var/lib/postgresql/data"
@@ -44,8 +44,6 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
       - "6379:6379"
-    depends_on:
-      - postgres
 
   jobmanager:
     build:
@@ -88,29 +86,6 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
       - ./frontend/build:/var/www/app
 
-  producer:
-    build:
-      context: ./producer
-      dockerfile: Dockerfile.producer
-    restart: always
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - postgres
-
-  copycat:
-    build:
-      context: ./producer
-      dockerfile: Dockerfile.copycat
-    restart: always
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - postgres
-      - producer
-
 
   app:
     build:
@@ -123,4 +98,3 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
-      - copycat

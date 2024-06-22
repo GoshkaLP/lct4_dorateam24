@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
 
-router = APIRouter(prefix="/api/debug")
+router = APIRouter(prefix="/api")
 
 
-@router.get("/")
+@router.get("/debug")
 def debug():
     return "ok"

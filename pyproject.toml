@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "lct4-dorateam24"
+version = "0.1.0"
+description = ""
+authors = ["dorateam"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.111.0"}
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.31"}
+geoalchemy2 = "^0.15.1"
+psycopg2-binary = "^2.9.9"
+asyncpg = "^0.29.0"
+requests = "^2.32.3"
+ruff = "^0.4.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
