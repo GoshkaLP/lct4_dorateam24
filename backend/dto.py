@@ -50,3 +50,17 @@ class Feature(BaseModel):
 class FeatureCollection(BaseModel):
     type: str = "FeatureCollection"
     features: list[Feature]
+
+
+class AuthForm(BaseModel):
+    email: str
+    password: str
+
+
+class Token(BaseModel):
+    token: str
+
+
+class TokenData(BaseModel):
+    id: int
+    email: str

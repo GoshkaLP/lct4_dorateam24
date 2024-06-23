@@ -1,4 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
+
+
+def get_model_config(env_prefix: str = "") -> SettingsConfigDict:
+    return SettingsConfigDict(env_prefix=env_prefix, env_file=".env", extra="ignore")
 
 
 class AppSettings(BaseSettings):
@@ -15,12 +20,20 @@ class DBSettings(BaseSettings):
     user: str
     db: str
 
-    model_config = SettingsConfigDict(env_prefix="postgres_", env_file=".env")
+    model_config = get_model_config(env_prefix="postgres_")
 
     @property
     def postgres_dsn(self):
         return f"postgresql://{self.user}:{self.password}@{self.hostname}:{self.port}/{self.db}"
 
 
+class JWTSettings(BaseSettings):
+    secret_key: str
+    algorithm: str = "HS256"
+
+    model_config = get_model_config()
+
+
 app_settings = AppSettings()
 db_settings = DBSettings()
+jwt_settings = JWTSettings()

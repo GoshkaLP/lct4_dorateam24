@@ -1,14 +1,18 @@
-from fastapi import APIRouter, Depends, Form
+from fastapi import APIRouter, Depends, Security
 from asyncpg import Connection
 from backend.dto import PolygonsRequest, FeatureCollection
 from backend.utils.db import get_db
 from backend.services.areas_service import AreasService
+from backend.dependencies.token import token_utility
+
 
 router = APIRouter(tags=["Area polygons"], prefix="/polygons")
 areas_service = AreasService()
 
 
-@router.post("/", response_model=FeatureCollection)
+@router.post(
+    "/", response_model=FeatureCollection, dependencies=[Security(token_utility)]
+)
 async def get_areas_by_navigation_filters(
     request_data: PolygonsRequest, db: Connection = Depends(get_db)
 ):
