@@ -8,7 +8,7 @@ import {useClickOutside} from "../../hooks/useClickOutside";
 import {MainContext} from "./context";
 import { useData } from "../Filters/components/DataContext/DataContext";
 
-function Main() {
+function Main({setCoordinatesPoint}) {
   const [train, setTrain] = useState({});
   const { testData } = useData()
 
@@ -29,7 +29,7 @@ function Main() {
   return (
     <main className="main">
         <MainContext.Provider value={contextValue}>
-          <Map data={testData} handleTrainClick={handleTrainClick} handleMapClick={handleMapClick}/>
+          <Map data={testData} handleTrainClick={handleTrainClick} handleMapClick={handleMapClick} setCoordinatesPoint={setCoordinatesPoint}/>
         </MainContext.Provider>
         <div ref={ref}>
             <DataPopup

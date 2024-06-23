@@ -5,11 +5,14 @@ import {
     Rectangle,
     TileLayer,
     useMap,
-    useMapEvent, 
-    GeoJSON
+    useMapEvent,
+    GeoJSON, Marker, Popup, useMapEvents, FeatureGroup
 } from "react-leaflet";
+import { EditControl } from "react-leaflet-draw";
+
 import { useEventHandlers } from "@react-leaflet/core";
 import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
 import "./Map.css";
 import Train from "../Train/Train";
 import useForceUpdateGeoJson from "./useForceUpdateGeoJson";
@@ -83,20 +86,33 @@ function MinimapControl({ position, zoom }) {
   );
 }
 
-function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleMapClick, }) {
+function LocationMarker({setCoordinatesPoint}) {
+    const [position, setPosition] = useState(null)
+    useMapEvents({
+        click(e) {
+            setPosition(e.latlng)
+            setCoordinatesPoint(e.latlng)
+        },
+    })
+
+    return position === null ? null : (
+        <Marker position={position}>
+            <Popup>{JSON.stringify(position)}</Popup>
+        </Marker>
+    )
+}
+
+function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleMapClick, setCoordinatesPoint }) {
     const hexbinKey = useForceUpdateGeoJson(hexbin);
     const polygonsKey = useForceUpdateGeoJson(polygons);
     const dataKey = useForceUpdateGeoJson(data)
     const [isOpenHex, setIsOpenHex] = useState(false);
     const [isOpenPolygon, setIsOpenPolygon] = useState(true);
-    const randomColors = ['#FFEDA0', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026']
 
-    const getRandomColor = () => {
-      return randomColors[Math.floor(Math.random() * randomColors.length)]
-    }
-    const style = () => {
+    const style = (feature) => {
       return {
-        fillColor: getRandomColor()
+        fillColor: feature.properties.color,
+          color: 'transparent',
       }
     }
     const showInfoOnGeo = (feature, layer) => {
@@ -121,8 +137,13 @@ function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleM
     const handleTogglePolygon = () => {
         setIsOpenPolygon(!isOpenPolygon);
     }
-    const setColor = ({ properties }) => {
-        return { ...properties, color: properties.color };
+
+    const onCreated = (e) => {
+        const { layerType, layer } = e;
+        if (layerType === "rectangle") {
+            const bounds = layer.getBounds();
+            console.log("Rectangle created with bounds:", bounds);
+        }
     };
 
     return (
@@ -144,6 +165,21 @@ function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleM
                   Object.keys(data).length ? <GeoJSON key={`polygon-${dataKey}`} attribution="&copy; credits due..." data={data} style={style} onEachFeature={showInfoOnGeo}/> : null
                 }
                 <MinimapControl position="topright" />
+                <LocationMarker setCoordinatesPoint={setCoordinatesPoint}/>
+                <FeatureGroup>
+                    <EditControl
+                        position="bottomright"
+                        onCreated={onCreated}
+                        draw={{
+                            polyline: false,
+                            polygon: false,
+                            circle: false,
+                            marker: false,
+                            circlemarker: false,
+                            rectangle: true,
+                        }}
+                    />
+                </FeatureGroup>
                 {/* {trains.map((train) => {
                     return <Train key={train.train_index} train={train} onClick={handleTrainClick} onOutsideClick={handleMapClick} />
                 })} */}

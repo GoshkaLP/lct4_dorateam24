@@ -13,10 +13,13 @@ import {DistrictField} from "./components/DistrictField/DistrictField";
 import { getOptionsAndMap, getFilterOptions, formatCrossingFilters} from "./utils";
 import {FieldNames} from "./constant";
 import { useData } from './components/DataContext/DataContext';
+import {Slider, Switch} from "@mui/material";
 
- function Filters() {
+ function Filters({coordinatesPoint}) {
     const { setTestData } = useData()
     const [localData, setLocalData] = useState(null)
+     const [byPoint, setByPoint] = useState(false)
+     const [range, setRange] = useState(false)
 
     const [submitCode, setSubmitCode] = useState(null);
     const areas = useFetch('http://178.20.44.143:8080/navigation/filters/areas');
@@ -30,7 +33,6 @@ import { useData } from './components/DataContext/DataContext';
     const addressesData = useMemo(() => getOptionsAndMap(addresses), [addresses]);
     const cadastralData = useMemo(() => getOptionsAndMap(cadastrals), [cadastrals]);
     const crossingFiltersData = useMemo(() => getFilterOptions(crossingFilters), [crossingFilters]);
-    console.log(crossingFiltersData)
 
     const [filterValues, setFilterValues] = useState({});
     const [showToolTip, setShowToolTip] = useState(null);
@@ -60,7 +62,6 @@ import { useData } from './components/DataContext/DataContext';
                 throw new Error('Response is not ok')
             }
             const data = await res.json()
-            console.log(data)
             setLocalData(data)
         } catch (error) {
             console.error('Error: ', error)
@@ -76,7 +77,20 @@ import { useData } from './components/DataContext/DataContext';
             [FieldNames.crossingFilters]: {},
         },
         onSubmit: (values) => {
-            setSubmitCode(JSON.stringify(values));
+            const data = byPoint ? {...values, radiusSearch: {lon: coordinatesPoint.lng, lat: coordinatesPoint.lat, radius: Number(range)/111111}} : values
+            try {
+                fetch('http://178.20.44.143:8080/polygons/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                }).then((res) => res.json().then((d) => {
+                    setLocalData(d);
+                }))
+            } catch (error) {
+                console.error('Error: ', error)
+            }
         }
     });
 
@@ -90,7 +104,7 @@ import { useData } from './components/DataContext/DataContext';
         setTestData(localData)
     }, [localData])
 
-    const handleCheckboxChange = (option, isChecked) => {
+    const handleCheckboxChange = (option, key, isChecked) => {
         setFilterValues(prevValues => ({
           ...prevValues,
           [option]: {
@@ -98,6 +112,7 @@ import { useData } from './components/DataContext/DataContext';
             value: isChecked ? 0 : null
           }
         }));
+        formik.setFieldValue(`crossingFilters.${key}`, 0)
     };
 
     const handleRadioChange = (option, key, newValue) => {
@@ -186,7 +201,7 @@ import { useData } from './components/DataContext/DataContext';
                                                         name={option}
                                                         value={0}    
                                                         checked={radioValue === 0}
-                                                        onChange={() => handleRadioChange(option, 0)}
+                                                        onChange={() => handleRadioChange(option, key, 0)}
                                                     />
                                                 </label>
                                             </div>
@@ -197,7 +212,7 @@ import { useData } from './components/DataContext/DataContext';
                                                         name={option}
                                                         value={1}    
                                                         checked={radioValue  === 1}
-                                                        onChange={() => handleRadioChange(option, 1)}
+                                                        onChange={() => handleRadioChange(option, key, 1)}
                                                     />
                                                 </label>
                                             </div>
@@ -208,7 +223,7 @@ import { useData } from './components/DataContext/DataContext';
                                                         name={option}
                                                         value={2}    
                                                         checked={radioValue === 2}
-                                                        onChange={() => handleRadioChange(option, 2)}
+                                                        onChange={() => handleRadioChange(option, key, 2)}
                                                     />
                                                 </label>
                                             </div>
@@ -218,6 +233,27 @@ import { useData } from './components/DataContext/DataContext';
                             );
                         })}
                     </div>
+                    <Box display={'flex'}>
+                        Поиск по точке
+                        <Switch value={byPoint} onChange={(_, newValue) => {setByPoint(newValue)}}/>
+                    </Box>
+                    {byPoint && <Box>
+                        Координаты точки:
+                        <Box display={'flex'}>
+                            {JSON.stringify(coordinatesPoint)}
+                        </Box>
+                        Радиус, м:
+                        <Slider
+                            aria-label="range"
+                            defaultValue={5}
+                            valueLabelDisplay={range}
+                            shiftStep={1}
+                            step={100}
+                            min={0}
+                            max={10000}
+                            onChange={(_, v) => setRange(v)}
+                        />
+                    </Box>}
                     
                     <button type="submit">Submit</button>
                 </Box>

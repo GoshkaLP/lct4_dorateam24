@@ -5,6 +5,9 @@
 body {
   font-family: 'Montserrat', sans-serif;
 }
+.sr-only {
+  display: none;
+}
 
 #root {
   display: flex;
