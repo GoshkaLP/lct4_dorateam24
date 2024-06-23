@@ -6,10 +6,11 @@ import "./Main.css";
 import React, {useMemo, useState} from "react";
 import {useClickOutside} from "../../hooks/useClickOutside";
 import {MainContext} from "./context";
-import MessagePopup from "../MessagePopup/MessagePopup";
+import { useData } from "../Filters/components/DataContext/DataContext";
 
-function Main({data, polygons, hexbin}) {
+function Main() {
   const [train, setTrain] = useState({});
+  const { testData } = useData()
 
     const handleMapClick = () => {
         if (Object.keys(train).length) {
@@ -25,12 +26,10 @@ function Main({data, polygons, hexbin}) {
 
   const contextValue = useMemo(() => ({ selectedTrain: train.train_index }), [train.train_index]);
 
-
-
   return (
     <main className="main">
         <MainContext.Provider value={contextValue}>
-      <Map data={data} polygons={polygons} hexbin={hexbin} handleTrainClick={handleTrainClick} handleMapClick={handleMapClick}/>
+          <Map data={testData} handleTrainClick={handleTrainClick} handleMapClick={handleMapClick}/>
         </MainContext.Provider>
         <div ref={ref}>
             <DataPopup

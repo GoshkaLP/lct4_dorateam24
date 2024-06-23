@@ -3,4 +3,5 @@ export const FieldNames = {
     cadastrals: 'cadastrals',
     areas: 'areas',
     districts: 'districts',
+    crossingFilters: 'crossingFilters'
 }

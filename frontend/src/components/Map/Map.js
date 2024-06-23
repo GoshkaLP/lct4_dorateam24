@@ -83,11 +83,36 @@ function MinimapControl({ position, zoom }) {
   );
 }
 
-function ReactControlExample({ data: trains, polygons, hexbin, handleTrainClick, handleMapClick, }) {
+function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleMapClick, }) {
     const hexbinKey = useForceUpdateGeoJson(hexbin);
     const polygonsKey = useForceUpdateGeoJson(polygons);
+    const dataKey = useForceUpdateGeoJson(data)
     const [isOpenHex, setIsOpenHex] = useState(false);
     const [isOpenPolygon, setIsOpenPolygon] = useState(true);
+    const randomColors = ['#FFEDA0', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026']
+
+    const getRandomColor = () => {
+      return randomColors[Math.floor(Math.random() * randomColors.length)]
+    }
+    const style = () => {
+      return {
+        fillColor: getRandomColor()
+      }
+    }
+    const showInfoOnGeo = (feature, layer) => {
+      const { district, area, cadastral, address, square } = feature.properties
+
+      const tooltipContent = `
+        <div>Район: ${district}</div>
+        <div>Область: ${area}</div>
+        <div>Кадастровый номер: ${cadastral}</div>
+        <div>Адрес: ${address}</div>
+        <div>Площадь: ${square} км.кв.</div>
+      `
+      layer.bindTooltip(tooltipContent,
+        {permanent: false}
+      )
+    }
 
     const handleToggleHex = () => {
         setIsOpenHex(!isOpenHex);
@@ -109,16 +134,19 @@ function ReactControlExample({ data: trains, polygons, hexbin, handleTrainClick,
                 scrollWheelZoom={true}
                 attributionControl={false}
             >
-                {Object.keys(polygons).length && isOpenPolygon ? <GeoJSON key={`polygon-${polygonsKey}`} attribution="&copy; credits due..." data={polygons} style={setColor} /> : null}
-                {Object.keys(hexbin).length && isOpenHex ? <GeoJSON key={`hexbin-${hexbinKey}`} attribution="&copy; credits due..." data={hexbin} style={setColor} /> : null}
+                {/* {Object.keys(polygons).length && isOpenPolygon ? <GeoJSON key={`polygon-${polygonsKey}`} attribution="&copy; credits due..." data={polygons} style={style} onEachFeature={showInfoOnGeo}/> : null}
+                {Object.keys(hexbin).length && isOpenHex ? <GeoJSON key={`hexbin-${hexbinKey}`} attribution="&copy; credits due..." data={hexbin} style={style} onEachFeature={showInfoOnGeo} /> : null} */}
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
                 />
+                {data !== null &&
+                  Object.keys(data).length ? <GeoJSON key={`polygon-${dataKey}`} attribution="&copy; credits due..." data={data} style={style} onEachFeature={showInfoOnGeo}/> : null
+                }
                 <MinimapControl position="topright" />
-                {trains.map((train) => {
+                {/* {trains.map((train) => {
                     return <Train key={train.train_index} train={train} onClick={handleTrainClick} onOutsideClick={handleMapClick} />
-                })}
+                })} */}
             </MapContainer>
 
             <div className="button-container">

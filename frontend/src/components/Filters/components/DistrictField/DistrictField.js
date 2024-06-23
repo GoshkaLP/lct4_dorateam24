@@ -13,7 +13,7 @@ export const DistrictField = ({ value, onChange, options, areas, loading}) => {
     );
     return <Autocomplete
         value={value}
-        multipl
+        multiple
         loading={loading}
         onChange={onChange}
         options={options}
