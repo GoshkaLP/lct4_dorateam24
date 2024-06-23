@@ -45,7 +45,9 @@ class TokenUtility:
             )
             return TokenData(id=payload["id"], email=payload["email"])
         except PyJWTError as e:
-            raise HTTPException(detail="Unable to verify token", status_code=401)
+            raise HTTPException(
+                detail=f"Unable to verify token: {str(e)}", status_code=401
+            )
 
 
 token_utility = TokenUtility()

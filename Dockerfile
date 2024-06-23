@@ -5,7 +5,6 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --verbose --no-interaction --no-ansi
 
 COPY backend/ ./backend
-ENV PATH="/opt/app/.venv/bin:$PATH"
 
 EXPOSE 8080
 

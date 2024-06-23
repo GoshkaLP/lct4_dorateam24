@@ -22,3 +22,16 @@ class LayerService:
     async def get_addresses(self, db: Connection):
         response = await db.fetch("SELECT * FROM addresses")
         return [{"id": row["id"], "title": row["address"]} for row in response]
+
+    @db_error
+    async def get_crossing_territories_filters(self, db: Connection):
+        response = await db.fetch("SELECT * FROM crossing_territories_filter")
+        return [
+            {
+                "id": row["id"],
+                "title": row["filter_ru_name"],
+                "description": row["filter_ru_desc"],
+                "key": row["filter_en_name"],
+            }
+            for row in response
+        ]
