@@ -1,10 +1,10 @@
 .filters {
     position: absolute;
-    z-index: 1000;
-    top: 50px;
-    left: 50px;
+    z-index: 2001;
+    top: 90px;
+    left: 55px;
     width: 380px;
-    height: calc(100% - 100px);
+    height: calc(100% - 200px);
 }
 
 .filters-card {
@@ -17,6 +17,11 @@
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
+    
+}
+.css-1v5z4dq-MuiPaper-root-MuiCard-root {
+    border-radius: 25px !important;
+    box-shadow: 2.5px 2.5px 10px rgba(0, 0, 0, 0.15);
 }
 
 .form-container {
@@ -90,15 +95,13 @@
 .form-button {
     cursor: pointer;
     border: none;
-    border-radius: 4px;
-    box-shadow: 0px 3px 1px -2px #00000033;
-    box-shadow: 0px 2px 2px 0px #00000024;
-    box-shadow: 0px 1px 5px 0px #0000001F;
-    height: 42px;
+    border-radius: 25px;
+    height: 34px;
     margin: 16px;
     width: calc(100% - 32px);
-    background-color: #2196F3;
+    background-color: #0D4CD3;
     color: white;
+    font-family: 'Nunito';
     font-size: 15px;
     font-weight: 500;
     line-height: 26px;

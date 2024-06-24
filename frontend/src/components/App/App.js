@@ -3,6 +3,7 @@ import Main from "../Main/Main";
 import "./App.css";
 import Filters from "../Filters/Filters";
 import { DataProvider } from "../Filters/components/DataContext/DataContext";
+import Header from "../Header/Header";
 
 function App() {
     const [coordinatesPoint, setCoordinatesPoint] = useState(null)
@@ -12,6 +13,7 @@ function App() {
   return (
     <DataProvider>
       <div className="app">
+        <Header />
         <Filters coordinatesPoint={coordinatesPoint} setSelectedCrossingFilters={setSelectedCrossingFilters} setFilterNames={setFilterNames}/>
         <Main setCoordinatesPoint={setCoordinatesPoint} selectedCrossingFilters={selectedCrossingFilters} filterNames={filterNames}/>
       </div>

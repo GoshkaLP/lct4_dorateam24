@@ -304,7 +304,7 @@ import {Slider, Switch} from "@mui/material";
                     </div>
                     
                     <div class="form-button-container">
-                        <Button variant="contained" class="form-button" type="submit">НАЙТИ УЧАСТКИ</Button>
+                        <Button variant="contained" class="form-button" type="submit">Найти участки</Button>
                     </div>
                     {/* <button class="form-button" type="submit">Submit</button> */}
                 </Box>
