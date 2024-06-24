@@ -2,9 +2,13 @@
 Репозиторий проекта хакатона ЛЦТ 2024 трек 4 от команды dorateam.
 
 ### Рабочий прототип
+[Ссылка](http://178.20.44.143/)
 ![image](imgs/main.png)
 
-### Прототип в Figma
+### Документация API
+[Cсылка](http://178.20.44.143:8080/docs#/)
+
+### Figma
 [Ссылка](https://www.figma.com/design/tcq0tgLDgDZQucCx6NIdj4/%D0%BB%D1%86%D1%8224?node-id=0-1&t=81d1cDCnlHG6WQxI-1)
 
 ### Презентация
