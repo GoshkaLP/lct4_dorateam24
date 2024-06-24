@@ -112,7 +112,8 @@ function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleM
     const style = (feature) => {
       return {
         fillColor: feature.properties.color,
-          color: 'transparent',
+        color: 'transparent',
+        fillOpacity: 0.5
       }
     }
     const showInfoOnGeo = (feature, layer) => {
@@ -150,8 +151,8 @@ function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleM
         <>
             <MapContainer
                 style={{ height: "100vh", zIndex: 1 }}
-                center={[55.8304, 49.0661]}
-                zoom={6}
+                center={[55.7022, 37.4155]}
+                zoom={12}
                 scrollWheelZoom={true}
                 attributionControl={false}
             >

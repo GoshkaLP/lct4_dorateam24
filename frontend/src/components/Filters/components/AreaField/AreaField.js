@@ -14,6 +14,7 @@ export const AreaField = ({ value, onChange, options, areas, loading }) => {
     );
 
     return <Autocomplete
+        size="small"
         value={value}
         multiple
         loading={loading}
@@ -23,7 +24,7 @@ export const AreaField = ({ value, onChange, options, areas, loading }) => {
         // filterOptions={(x) => x} // Disable the default filtering as we handle it ourselves
         getOptionLabel={getOptionLabel(areas)}
         renderInput={(params) => (
-            <TextField {...params} placeholder="Муниципальный округ Внуково и еще 2" id="" />
+            <TextField {...params} variant="filled" label="Район" id="" />
         )}
     />
 }
