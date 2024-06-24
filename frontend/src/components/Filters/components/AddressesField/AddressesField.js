@@ -129,8 +129,8 @@ const StyledPopper = styled(Popper)({
 
     return (
         <Autocomplete
+            size="small"
             id="virtualize-demo"
-            sx={{ width: 500 }}
             multiple
             value={value}
             onChange={onChange}
@@ -141,7 +141,7 @@ const StyledPopper = styled(Popper)({
             getOptionLabel={getOptionLabel(addresses)}
             options={options}
             // groupBy={(option) => option[0].toUpperCase()}
-            renderInput={(params) => <TextField {...params} label="Поиск по адресу..." />}
+            renderInput={(params) => <TextField {...params} variant="filled" label="Адрес" />}
             renderOption={(props, option, state) =>
                 [props, option, state.index]
             }

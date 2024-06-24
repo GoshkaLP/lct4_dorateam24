@@ -129,8 +129,8 @@ function CadastralsField({ options, onChange, value, cadastrals, loading }) {
 
     return (
         <Autocomplete
+            size="small"
             id="virtualize-demo"
-            sx={{ width: 500 }}
             multiple
             value={value}
             onChange={onChange}
@@ -140,7 +140,7 @@ function CadastralsField({ options, onChange, value, cadastrals, loading }) {
             ListboxComponent={ListboxComponent}
             getOptionLabel={getOptionLabel(cadastrals)}
             options={options}
-            renderInput={(params) => <TextField {...params} label="Кадастр 1" />}
+            renderInput={(params) => <TextField {...params} variant="filled" label="Кадастровый номер" />}
             renderOption={(props, option, state) => {
                 return [props, option, state.index];
             }}

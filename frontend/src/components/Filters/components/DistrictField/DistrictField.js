@@ -12,6 +12,7 @@ export const DistrictField = ({ value, onChange, options, areas, loading}) => {
         []
     );
     return <Autocomplete
+        size="small"
         value={value}
         multiple
         loading={loading}
@@ -21,7 +22,7 @@ export const DistrictField = ({ value, onChange, options, areas, loading}) => {
         // filterOptions={(x) => x} // Disable the default filtering as we handle it ourselves
         getOptionLabel={getOptionLabel(areas)}
         renderInput={(params) => (
-            <TextField {...params} placeholder="Район Лефортово " id="" />
+            <TextField {...params} variant="filled" label="Округ" id="" />
         )}
     />
 }
