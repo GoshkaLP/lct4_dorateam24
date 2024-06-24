@@ -16,6 +16,8 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import "./Map.css";
 import Train from "../Train/Train";
 import useForceUpdateGeoJson from "./useForceUpdateGeoJson";
+import HoverCard from "../MapHoverCard/HoverCard";
+import ReactDOMServer from 'react-dom/server'
 
 const POSITION_CLASSES = {
   bottomleft: "leaflet-bottom leaflet-left",
@@ -70,7 +72,7 @@ function MinimapControl({ position, zoom }) {
         attributionControl={false}
         zoomControl={false}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MinimapBounds parentMap={parentMap} zoom={mapZoom} />
       </MapContainer>
     ),
@@ -102,7 +104,7 @@ function LocationMarker({setCoordinatesPoint}) {
     )
 }
 
-function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleMapClick, setCoordinatesPoint }) {
+function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleMapClick, setCoordinatesPoint, selectedCrossingFilters, filterNames }) {
     const hexbinKey = useForceUpdateGeoJson(hexbin);
     const polygonsKey = useForceUpdateGeoJson(polygons);
     const dataKey = useForceUpdateGeoJson(data)
@@ -117,15 +119,10 @@ function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleM
       }
     }
     const showInfoOnGeo = (feature, layer) => {
-      const { district, area, cadastral, address, square } = feature.properties
 
-      const tooltipContent = `
-        <div>Район: ${district}</div>
-        <div>Область: ${area}</div>
-        <div>Кадастровый номер: ${cadastral}</div>
-        <div>Адрес: ${address}</div>
-        <div>Площадь: ${square} км.кв.</div>
-      `
+      const tooltipContent = ReactDOMServer.renderToString(
+        <HoverCard featureProps={feature.properties} selectedCrossingFilters={selectedCrossingFilters} filterNames={filterNames}/>
+      )
       layer.bindTooltip(tooltipContent,
         {permanent: false}
       )
