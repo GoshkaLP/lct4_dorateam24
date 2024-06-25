@@ -6,7 +6,7 @@ import { DataProvider } from "../Filters/components/DataContext/DataContext";
 import Header from "../Header/Header";
 
 function App() {
-    const [coordinatesPoint, setCoordinatesPoint] = useState(null)
+    const [coordinatesPoint, setCoordinatesPoint] = useState({ lng: 37.4155, lat: 55.7022 }) // const [coordinatesPoint, setCoordinatesPoint] = useState(null)
     const [selectedCrossingFilters, setSelectedCrossingFilters] = useState(null)
     const [filterNames, setFilterNames] = useState({})
 

@@ -89,7 +89,7 @@ function MinimapControl({ position, zoom }) {
 }
 
 function LocationMarker({setCoordinatesPoint}) {
-    const [position, setPosition] = useState(null)
+  const [position, setPosition] = useState([55.7022, 37.4155]) // const [position, setPosition] = useState(null)
     useMapEvents({
         click(e) {
             setPosition(e.latlng)
