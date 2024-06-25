@@ -1,6 +1,6 @@
 .filters {
     position: absolute;
-    z-index: 2001;
+    z-index: 1000;
     top: 90px;
     left: 55px;
     width: 380px;

@@ -183,10 +183,10 @@ function ReactControlExample({ data, polygons, hexbin, handleTrainClick, handleM
                 })} */}
             </MapContainer>
 
-            <div className="button-container">
-              <button className={`map__button map__button_left ${isOpenHex ? "map__button_selected map__button_left_selected" : "" }`} type="button" onClick={handleToggleHex} />
-              <button className={`map__button map__button_right ${isOpenPolygon ? "map__button_selected map__button_right_selected" : "" }`} type="button" onClick={handleTogglePolygon} />
-            </div>
+            {/*<div className="button-container">*/}
+            {/*  <button className={`map__button map__button_left ${isOpenHex ? "map__button_selected map__button_left_selected" : "" }`} type="button" onClick={handleToggleHex} />*/}
+            {/*  <button className={`map__button map__button_right ${isOpenPolygon ? "map__button_selected map__button_right_selected" : "" }`} type="button" onClick={handleTogglePolygon} />*/}
+            {/*</div>*/}
         </>
 
     );
