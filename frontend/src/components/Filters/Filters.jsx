@@ -18,7 +18,7 @@ import {FieldNames} from "./constant";
 import { useData } from './components/DataContext/DataContext';
 import {Slider, Switch} from "@mui/material";
 
- function Filters({coordinatesPoint}) {
+ function Filters({coordinatesPoint, setSelectedCrossingFilters, setFilterNames}) {
     const { setTestData } = useData()
     const [localData, setLocalData] = useState(null)
      const [byPoint, setByPoint] = useState(false)
@@ -81,6 +81,12 @@ import {Slider, Switch} from "@mui/material";
         },
         onSubmit: (values) => {
             const data = byPoint ? {...values, radiusSearch: {lon: coordinatesPoint.lng, lat: coordinatesPoint.lat, radius: Number(range)/111111}} : values
+            setSelectedCrossingFilters(data.crossingFilters)
+            const tmp = {}
+            crossingFiltersData.map.forEach((value, key) => {
+                tmp[value.key] = key
+            })
+            setFilterNames(tmp)
             try {
                 fetch('http://178.20.44.143:8080/polygons/', {
                     method: 'POST',
@@ -298,7 +304,7 @@ import {Slider, Switch} from "@mui/material";
                     </div>
                     
                     <div class="form-button-container">
-                        <Button variant="contained" class="form-button" type="submit">НАЙТИ УЧАСТКИ</Button>
+                        <Button variant="contained" class="form-button" type="submit">Найти участки</Button>
                     </div>
                     {/* <button class="form-button" type="submit">Submit</button> */}
                 </Box>
