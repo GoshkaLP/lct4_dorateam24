@@ -119,6 +119,12 @@
   background-repeat: no-repeat;
   background-position: 50%;
 }
+.leaflet-right .leaflet-control {
+  margin-top: 100px !important;
+}
+.leaflet-left .leaflet-control {
+  margin-top: 100px !important;
+}
 
 /*.map_polygonButton {*/
 /*  position: absolute;*/
