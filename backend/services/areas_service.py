@@ -12,26 +12,14 @@ colors_utility = ColorsUtility()
 class AreasService:
     def __init__(self):
         self.color_start = "#E10000"
-        self.color_mid = "#F1A30D"
-        self.color_end = "#2196F3"
+        self.color_end = "#0DD344"
 
     def _add_color(self, objects: list[dict]):
-        transition_index = len(objects) // 2
         for i, obj in enumerate(objects):
-            if i < transition_index:
-                factor = i / (transition_index - 1) if transition_index > 1 else 0
-                obj["properties"]["color"] = colors_utility.interpolate_color(
-                    self.color_start, self.color_end, factor
-                )
-            else:
-                factor = (
-                    (i - transition_index) / (len(objects) - transition_index - 1)
-                    if (len(objects) - transition_index) > 1
-                    else 0
-                )
-                obj["properties"]["color"] = colors_utility.interpolate_color(
-                    self.color_mid, self.color_end, factor
-                )
+            factor = i / (len(objects) - 1) if len(objects) > 1 else 0
+            obj["properties"]["color"] = colors_utility.interpolate_color(
+                self.color_start, self.color_end, factor
+            )
 
     @db_error
     async def get_polygons(self, db: Connection, request_data: PolygonsRequest):
